@@ -2,6 +2,7 @@ module MCPackage
     class RedHat < Package
 
         def create_package
+            #Send stdout to a log file. Keep on failure
             FPM::Program.new.run params
             clean_up
         end

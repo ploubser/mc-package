@@ -9,7 +9,7 @@ module MCPackage
         def initialize(name, version, post_install = nil)
             @name = name
             @version = version
-            @post_install = nil
+            @post_install = post_install
             @tmp_dir = Dir.mktmpdir("mc-package")
             package_type
         end
