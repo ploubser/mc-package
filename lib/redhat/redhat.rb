@@ -7,15 +7,18 @@ module MCPackage
         end
         def create_package
             #Send stdout to a log file. Keep on failure
-            FPM::Program.new.run params
+            puts @agent
+            puts @application
+            FPM::Program.new.run params("agent") if @agent
+            FPM::Program.new.run params("application") if @application
         end
 
-        def params
+        def params(dir)
             #Standard fpm flags
-            params = ["-s", "dir", "-C", @tmp_dir, "-t", "rpm", "-a", "all", "-n", @name, "-v", @version]
+            params = ["-s", "dir", "-C", @tmp_dir, "-t", "rpm", "-a", "all", "-n", "#{@name}-#{dir}", "-v", @version]
             #Post install scripts
             params += ["--post-install", @post_install] if @post_install
-            params << @mc_path
+            params << "#{@mc_path}/#{dir}/"
         end
     end
 end

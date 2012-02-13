@@ -4,21 +4,30 @@ module MCPackage
         require 'fileutils'
         require 'tmpdir'
 
-        attr_accessor :name, :version, :tmp_dir, :post_install, :plugin_type, :mc_path
+        #mc_path needs to be set by calling super from the package type sub class
+        attr_accessor :name, :version, :tmp_dir, :post_install, :plugin_type, :mc_path,
+            :dependencies, :agent, :application
 
+        #TODO: Consider adding dependencies
         def initialize(name, version, mc_path, post_install = nil)
             @name = name
-            @version = version
+            @version = (version.is_a? String) ? version : version.to_s
             @post_install = post_install
             @tmp_dir = Dir.mktmpdir "mc-package"
             @mc_path = mc_path
+            @dependencies = nil
+            @agent = false
+            @application = false
             package_type
         end
 
         def package_type
             #Normal application/agent definition
-            if File.directory?("#{Dir.pwd}/agent") && File.directory?("#{Dir.pwd}/application")
+            if File.directory?("#{Dir.pwd}/agent")
                 prepare_package :agent
+            end
+            if File.directory?("#{Dir.pwd}/application")
+                prepare_package :application
             end
         end
 
@@ -27,11 +36,14 @@ module MCPackage
         end
 
         def prepare_package(type)
+            FileUtils.mkdir_p "#{@tmp_dir}/#{@mc_path}"
             case type
             when :agent
-                FileUtils.mkdir_p "#{@tmp_dir}/#{@mc_path}"
                 FileUtils.cp_r "agent", "#{@tmp_dir}/#{@mc_path}"
+                @agent = true
+            when :application
                 FileUtils.cp_r "application", "#{@tmp_dir}/#{@mc_path}"
+                @application = true
             else
                 raise "Undefined Plugin Type"
             end
