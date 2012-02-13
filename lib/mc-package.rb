@@ -2,10 +2,11 @@ module MCPackage
     require 'rubygems'
     require 'facter'
     require 'fpm/program'
+    require 'package'
 
     #require package classes
-    require 'package'
     Dir[File.dirname(__FILE__) + "/**/*.rb"].each {|f| require f}
+
     def self.create_package(options)
         unless options[:ostype]
            options[:ostype] = Facter.value("osfamily")
