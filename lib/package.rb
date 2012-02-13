@@ -30,12 +30,24 @@ module MCPackage
         def prepare_package(type)
             case type
             when :agent
+                create_package_dirs
+            else
+                raise "Undefined Plugin Type"
+            end
+        end
+
+        def create_package_dirs
+            case self.class.to_s
+            when /redhat/i
                 FileUtils.mkdir_p "#{@tmp_dir}/usr/libexec/mcollective/mcollective"
                 FileUtils.cp_r "agent", "#{@tmp_dir}/usr/libexec/mcollective/mcollective"
                 FileUtils.cp_r "application", "#{@tmp_dir}/usr/libexec/mcollective/mcollective"
                 @plugin_dir = "usr/libexec/mcollective/mcollective"
-            else
-                raise "Undefined Plugin Type"
+            when /debian/i
+                FileUtils.mkdir_p "#{@tmp_dir}/usr/share/mcollective/plugins/mcollective"
+                FileUtils.cp_r "agent", "#{@tmp_dir}/usr/share/mcollective/plugins/mcollective"
+                FileUtils.cp_r "application", "#{@tmp_dir}/usr/share/mcollective/plugins/mcollective"
+                @plugin_dir = "usr/share/mcollective/plugins/mcollective"
             end
         end
     end
