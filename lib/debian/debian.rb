@@ -2,7 +2,7 @@ module MCPackage
   class Debian < Package
 
     def initialize(name, post_install, iteration)
-      libdir = "usr/libexec/mcollective/mcollective/"
+      libdir = "usr/share/mcollective/plugins/mcollective"
       super(name, libdir, post_install, iteration)
     end
 
