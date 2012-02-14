@@ -2,15 +2,15 @@ module MCPackage
   class Debian < Package
 
     def initialize(name, version, post_install)
-      mc_path = "usr/libexec/mcollective/mcollective/"
-      super(name, version, mc_path, post_install)
+      libdir = "usr/libexec/mcollective/mcollective/"
+      super(name, version, libdir, post_install)
     end
 
     def create_package
       #TODO: Deal with fpm output
       create_dependencies if @dependencies
       FPM::Program.new.run params("agent") if @agent
-      FPM::Program.new.run params("application") if @application
+      FPM::Program.new.run params("client") if @application
     end
 
     def create_dependencies
@@ -19,16 +19,17 @@ module MCPackage
 
     def params(dir)
       #Standard fpm flags
-      params = ["-s", "dir", "-C", @tmp_dir, "-t", "deb", "-a", "all", "-n", "#{@name}-#{dir}", "-v", @version]
-
+      params = ["-s", "dir", "-C", @tmp_dir, "-t", "deb", "-a", "all", "-n", "mcollective-#{@name}-#{dir}", "-v", @version]
+      #Dependencies
+      params += ["-d","mcollective-#{@name}-common >= #{@version}"] if @dependencies
       #Post install scripts
-      params += ["-d","#{@name}-common"] if @dependencies
       params += ["--post-install", @post_install] if @post_install
-      params << File.join(@mc_path, dir)
+      #Package dir target
+      params << File.join(@libdir, (dir == "client") ? "application" : dir)
     end
 
     def dep_params
-      params = ["-s", "dir", "-C", @tmp_dir, "-t", "deb", "-a", "all", "-n", "#{@name}-common", "-v", @version, File.join(@mc_path, "common")]
+      params = ["-s", "dir", "-C", @tmp_dir, "-t", "deb", "-a", "all", "-n", "mcollective-#{@name}-common", "-v", @version, File.join(@libdir, "util")]
     end
   end
 end
