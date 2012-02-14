@@ -25,7 +25,4 @@ module MCPackage
             puts e
         end
     end
-
-    def self.noop
-    end
 end

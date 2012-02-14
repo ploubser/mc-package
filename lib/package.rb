@@ -6,7 +6,7 @@ module MCPackage
 
         #mc_path needs to be set by calling super from the package type sub class
         attr_accessor :name, :version, :tmp_dir, :post_install, :plugin_type, :mc_path,
-            :dependencies, :agent, :application
+            :dependencies, :agent, :application, :dependencies
 
         #TODO: Consider adding dependencies
         def initialize(name, version, mc_path, post_install = nil)
@@ -18,14 +18,20 @@ module MCPackage
             @dependencies = nil
             @agent = false
             @application = false
+            @dependencies = false
             package_type
         end
 
         def package_type
-            #Normal application/agent definition
+
+            if File.directory?("#{Dir.pwd}/common")
+                prepare_package :common
+            end
+
             if File.directory?("#{Dir.pwd}/agent")
                 prepare_package :agent
             end
+
             if File.directory?("#{Dir.pwd}/application")
                 prepare_package :application
             end
@@ -37,7 +43,11 @@ module MCPackage
 
         def prepare_package(type)
             FileUtils.mkdir_p "#{@tmp_dir}/#{@mc_path}"
+
             case type
+            when :common
+                FileUtils.cp_r "common", "#{@tmp_dir}/#{@mc_path}"
+                @dependencies = true
             when :agent
                 FileUtils.cp_r "agent", "#{@tmp_dir}/#{@mc_path}"
                 @agent = true
