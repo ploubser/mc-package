@@ -45,7 +45,8 @@ module MCPackage
     end
 
     def metadata
-      ["--url", @meta[:url], "--description", @meta[:description], "--license", @meta[:license], "--vendor", "Puppet Labs"]
+      ["--url", @meta[:url], "--description", @meta[:description], "--license", @meta[:license],
+        "--maintainer", @meta[:author], "--vendor", "Puppet Labs"]
     end
 
     def mcollective_dependencies(package_type)

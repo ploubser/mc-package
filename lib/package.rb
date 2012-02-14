@@ -22,7 +22,6 @@ module MCPackage
     end
 
     def package_type
-
       if File.directory?(File.join(Dir.pwd, "util"))
         prepare_package :common
       end
@@ -42,7 +41,6 @@ module MCPackage
 
     def prepare_package(type)
       tmpdir = File.join(@tmp_dir, @libdir)
-
       FileUtils.mkdir_p tmpdir
 
       case type
