@@ -16,7 +16,7 @@ module MCPackage
       options[:name] = File.basename(Dir.pwd)
     end
 
-    mc_package = instance_eval("MCPackage::#{options[:ostype]}.new(options[:name], options[:version], options[:postinstall])")
+    mc_package = instance_eval("MCPackage::#{options[:ostype]}.new(options[:name], options[:iteration], options[:postinstall])")
 
     begin
       mc_package.create_package

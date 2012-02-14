@@ -4,13 +4,12 @@ module MCPackage
     require 'tmpdir'
 
     #libdir needs to be set by calling super from the package type sub class
-    attr_accessor :name, :version, :tmp_dir, :post_install, :plugin_type, :libdir,
-      :dependencies, :agent, :application, :dependencies
+    attr_accessor :name, :tmp_dir, :post_install, :plugin_type, :libdir,
+      :dependencies, :agent, :application, :dependencies, :meta, :iteration
 
-    #TODO: Consider adding dependencies
-    def initialize(name, version, libdir, post_install = nil)
+    def initialize(name, libdir, iteration, post_install = nil)
       @name = name
-      @version = (version.is_a? String) ? version : version.to_s
+      @meta = MCPackage::DDL.new(name).meta
       @post_install = post_install
       @tmp_dir = Dir.mktmpdir "mc-package"
       @libdir = libdir
@@ -18,6 +17,7 @@ module MCPackage
       @agent = false
       @application = false
       @dependencies = false
+      @iteration = (iteration.is_a? String) ? iteration : iteration.to_s
       package_type
     end
 
