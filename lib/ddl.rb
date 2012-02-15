@@ -2,7 +2,6 @@
 #
 # Packages are defined and created with meta data contained in the agent ddl file.
 # A ddl file must be present to create a new package.
-
 module MCPackage
   class DDL
     require 'mcollective'

@@ -62,7 +62,6 @@ module MCPackage
         File.stubs(:directory?).with("agent").returns(false)
         File.stubs(:directory?).with("client").returns(false)
         FileUtils.expects(:cp_r).with("util", "tmpdir")
-
         package = Package.new("testpackage", "/tmp")
         package.dependencies.should == true
       end
@@ -73,7 +72,6 @@ module MCPackage
         File.stubs(:directory?).with("agent").returns(true)
         File.stubs(:directory?).with("client").returns(false)
         FileUtils.expects(:cp_r).with("agent", "tmpdir")
-
         package = Package.new("testpackage", "/tmp")
         package.agent.should == true
       end
@@ -83,7 +81,6 @@ module MCPackage
         File.stubs(:directory?).with("agent").returns(false)
         File.stubs(:directory?).with("client").returns(true)
         FileUtils.expects(:cp_r).with("application", "tmpdir")
-
         package = Package.new("testpackage", "/tmp")
         package.application.should == true
       end
