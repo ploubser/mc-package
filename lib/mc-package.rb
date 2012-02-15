@@ -34,7 +34,7 @@ module MCPackage
       mc_package.create_package
     rescue Exception => e
       mc_package = nil
-      puts e
+      puts e.to_s
     ensure
       mc_package.clean_up if mc_package
     end
