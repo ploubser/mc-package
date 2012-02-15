@@ -4,9 +4,11 @@ require 'mc-package'
 require 'optparse'
 
 @options = {:iteration => 1,
-            :ostype => nil,
+            :package_type => nil,
             :name => nil,
-            :post_install => nil}
+            :post_install => nil,
+            :vendor => nil
+}
 
 OptionParser.new do |opts|
   opts.banner = "Usage: mc-package [options]"
@@ -15,16 +17,16 @@ OptionParser.new do |opts|
     @options[:iteration] = iteration
   end
 
-  opts.on("-o", "--ostype OSTYPE", "Sets operating system package type (RedHat or Debian.") do |ostype|
-    @options[:ostype] = ostype
-  end
-
-  opts.on("-n", "--name NAME", "Sets package name.") do |name|
-    @options[:name] = name
+  opts.on("-o", "--packagetype PACKAGETYPE", "Sets package type.") do |package_type|
+    @options[:package_type] = package_type
   end
 
   opts.on("-p", "--postinstall SCRIPT", "Sets script to run on package post install.") do |script|
     @options[:postinstall] = script
+  end
+
+  opts.on("-v", "--vendor VENDOR", "Sets package vendor.") do |vendor|
+    @options[:vendor] = vendor
   end
 end.parse!
 

@@ -1,9 +1,10 @@
 module MCPackage
   class Debian < Package
 
-    def initialize(name, post_install, iteration)
+    def initialize(name, post_install, iteration, vendor = nil)
       libdir = "usr/share/mcollective/plugins/mcollective"
       super(name, libdir, post_install, iteration)
+      @vendor = vendor || "Puppet Labs"
     end
 
     def create_package
@@ -46,7 +47,7 @@ module MCPackage
 
     def metadata
       ["--url", @meta[:url], "--description", @meta[:description], "--license", @meta[:license],
-      "--maintainer", @meta[:author], "--vendor", "Puppet Labs"]
+        "--maintainer", @meta[:author], "--vendor", @vendor]
     end
 
     def mcollective_dependencies(package_type)
