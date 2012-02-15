@@ -5,7 +5,7 @@ module MCPackage
   class Redhat < Package
 
     def initialize(name, post_install, iteration, vendor = nil)
-      libdir = "/usr/libexec/mcollective/mcollective/"
+      libdir = "usr/libexec/mcollective/mcollective/"
       super(name, libdir, post_install, iteration)
       @vendor = vendor || "Puppet Labs"
     end

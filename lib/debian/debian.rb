@@ -7,7 +7,7 @@ module MCPackage
   class Debian < Package
 
     def initialize(name, post_install, iteration, vendor = nil)
-      libdir = "/usr/share/mcollective/plugins/mcollective"
+      libdir = "usr/share/mcollective/plugins/mcollective"
       super(name, libdir, post_install, iteration)
       @vendor = vendor || "Puppet Labs"
     end
