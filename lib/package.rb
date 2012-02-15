@@ -11,7 +11,7 @@ module MCPackage
     attr_accessor :name, :tmp_dir, :post_install, :plugin_type, :libdir,
       :dependencies, :agent, :application, :dependencies, :meta, :iteration, :called
 
-    def initialize(name, libdir, iteration, post_install = nil)
+    def initialize(name, libdir, iteration = "1", post_install = nil)
       raise "Package needs to implement create_package(). Aborting" unless self.methods.include? "create_package"
 
       @name = name
